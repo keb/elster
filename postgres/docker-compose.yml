@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: docker.io/library/postgres:15.2-alpine3.17
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: kevin
+      POSTGRES_PASSWORD: <generate a password>
+      POSTGRES_DB: postgres
+    volumes:
+      - /home/kevin/postgres/data:/var/lib/postgresql/data

@@ -1,0 +1,62 @@
+---
+version: "3"
+services:
+  invidious:
+    image: quay.io/invidious/invidious:latest-arm64
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:3000:3000
+    environment:
+      INVIDIOUS_CONFIG: |
+        db:
+          dbname: invidious
+          user: kemal
+          password: 7?Gi:;/o:]G9GQ6E({dK
+          host: invidious-db
+          port: 5432
+        check_tables: true
+        external_port: 443
+        popular_enabled: false
+        domain: yt.sheev.net
+        https_only: true
+        statistics_enabled: false
+        registration_enabled: false
+        login_enabled: false
+        enable_user_notifications: false
+        hmac_key: F>@n\Obb4@u?U*;X]p7#
+        default_user_preferences:
+          feed_menu: ["Subscriptions", "Playlists"]
+          default_home: Subscriptions
+          max_results: 30
+          related_videos: false
+          quality: medium
+          quality_dash: 480p
+    healthcheck:
+      test: wget -nv --tries=1 --spider
+        http://127.0.0.1:3000/api/v1/comments/jNQXAC9IVRw || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 2
+    logging:
+      options:
+        max-size: 500M
+        max-file: "4"
+    depends_on:
+      - invidious-db
+  invidious-db:
+    image: docker.io/library/postgres:15.2-alpine3.17
+    restart: unless-stopped
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+      - ./config/sql:/config/sql
+      - ./docker/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
+    environment:
+      POSTGRES_DB: invidious
+      POSTGRES_USER: kemal
+      POSTGRES_PASSWORD: 7?Gi:;/o:]G9GQ6E({dK
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+volumes:
+  postgresdata: null
