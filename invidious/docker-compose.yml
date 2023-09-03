@@ -1,17 +1,18 @@
----
+# MAKE SURE TO CHANGE THE POSTGRES_PW AND HMAC_KEY
 version: "3"
 services:
   invidious:
+    container_name: yt
     image: quay.io/invidious/invidious:latest-arm64
     restart: unless-stopped
     ports:
-      - 127.0.0.1:3000:3000
+      - "8902:3000"
     environment:
       INVIDIOUS_CONFIG: |
         db:
           dbname: invidious
           user: kemal
-          password: 7?Gi:;/o:]G9GQ6E({dK
+          password: POSTGRES_PW
           host: invidious-db
           port: 5432
         check_tables: true
@@ -23,7 +24,7 @@ services:
         registration_enabled: false
         login_enabled: false
         enable_user_notifications: false
-        hmac_key: F>@n\Obb4@u?U*;X]p7#
+        hmac_key: HMAC_KEY
         default_user_preferences:
           feed_menu: ["Subscriptions", "Playlists"]
           default_home: Subscriptions
@@ -43,6 +44,9 @@ services:
         max-file: "4"
     depends_on:
       - invidious-db
+    networks:
+      - db-network
+      - swag-containers
   invidious-db:
     image: docker.io/library/postgres:15.2-alpine3.17
     restart: unless-stopped
@@ -53,10 +57,20 @@ services:
     environment:
       POSTGRES_DB: invidious
       POSTGRES_USER: kemal
-      POSTGRES_PASSWORD: 7?Gi:;/o:]G9GQ6E({dK
+      POSTGRES_PASSWORD: POSTGRES_PW
     healthcheck:
       test:
         - CMD-SHELL
         - pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+    networks:
+      - db-network
 volumes:
   postgresdata: null
+
+# added to compat with swag
+networks:
+  db-network:
+  swag-containers:
+    external: true
+    name: swag-containers
+    driver: bridge

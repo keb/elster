@@ -1,4 +1,5 @@
-version: "3"
+# CHANGE MYSQL_PASSWORD
+version: "3.5"
 
 services:
   db:
@@ -7,12 +8,15 @@ services:
     environment:
       - MYSQL_DATABASE=photoview
       - MYSQL_USER=photoview
-      - MYSQL_PASSWORD=MDiHu8GxgJ%K:=
+      - MYSQL_PASSWORD=MYSQL_PASSWORD
       - MYSQL_RANDOM_ROOT_PASSWORD=1
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - db-network
 
   photoview:
+    container_name: photos
     image: docker.io/viktorstrate/photoview:2
     restart: always
     ports:
@@ -21,8 +25,11 @@ services:
       - db
 
     environment:
+      - PHOTOVIEW_DISABLE_RAW_PROCESSING=0
+      - PHOTOVIEW_DISABLE_VIDEO_ENCODING=1
+      - PHOTOVIEW_DISABLE_FACE_RECOGNITION=1
       - PHOTOVIEW_DATABASE_DRIVER=mysql
-      - PHOTOVIEW_MYSQL_URL=photoview:MDiHu8GxgJ%K:=@tcp(db)/photoview
+      - PHOTOVIEW_MYSQL_URL=photoview:MYSQL_PASSWORD@tcp(db)/photoview
       - PHOTOVIEW_LISTEN_IP=photoview
       - PHOTOVIEW_LISTEN_PORT=80
       - PHOTOVIEW_MEDIA_CACHE=/app/cache
@@ -46,6 +53,18 @@ services:
       # You can mount multiple paths, if your photos are spread across multiple directories.
       - /home/kevin/photos:/photos:ro
 
+    networks:
+      - db-network
+      - swag-containers
+
 volumes:
   db_data:
   api_cache:
+
+# added to compat with swag
+networks:
+  db-network:
+  swag-containers:
+    external: true
+    name: swag-containers
+    driver: bridge

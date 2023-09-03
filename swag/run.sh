@@ -10,7 +10,7 @@ docker run -d \
   --env TZ=Etc/UTC \
   --env URL=sheev.net \
   --env VALIDATION=http \
-  --env SUBDOMAINS=pi \
+  --env SUBDOMAINS=pi,yt,photos \
   --env CERTPROVIDER= `#optional` \
   --env DNSPLUGIN=cloudflare `#optional` \
   --env PROPAGATION= `#optional` \
