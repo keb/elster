@@ -19,5 +19,5 @@ To see cron logs (Raspberry Pi):
 4. `cat /var/log/cron.log`
 
 ```
-0 * * * * "/home/kevin/cron/restart_invidious.sh"
+0 * * * * "/home/kevin/elster/cron/restart_invidious.sh"
 ```
