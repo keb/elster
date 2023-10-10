@@ -12,7 +12,7 @@ docker network create --driver=bridge swag-containers
 
 2. Modify `swag/run.sh` to only include the `SUBDOMAINS` you want.
     * If you want to update them, edit `swag/run.sh` and then run `swag/update.sh`
-    * For all confs under `swag/config/nginx/proxy-confs` or `swag/config/nginx/site-confs` that you do not want, append `.disabled` or `.sample` to the filename.
+    * For all confs under `swag/config/nginx/proxy-confs` or `swag/config/nginx/site-confs` that you do not want, append `.sample` to the filename.
 
 3. Run `swag/run.sh`
 
