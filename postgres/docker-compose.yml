@@ -11,4 +11,4 @@ services:
       POSTGRES_PASSWORD: <generate a password>
       POSTGRES_DB: postgres
     volumes:
-      - /home/kevin/postgres/data:/var/lib/postgresql/data
+      - /home/kevin/elster/postgres/data:/var/lib/postgresql/data
