@@ -5,6 +5,7 @@ CONFIG_DIR="$(pwd)/config"
 docker run -d \
   --name=swag \
   --cap-add=NET_ADMIN \
+  --net=swag-containers \
   --env PUID=1000 \
   --env PGID=1000 \
   --env TZ=Etc/UTC \
