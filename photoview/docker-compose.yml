@@ -50,7 +50,7 @@ services:
       # If the photos are located at `/home/user/photos`, then change this value
       # to the following: `/home/user/photos:/photos:ro`.
       # You can mount multiple paths, if your photos are spread across multiple directories.
-      - /home/kevin/photos:/photos:ro
+      - /home/kevin/elster/photos:/photos:ro
 
     networks:
       - db-network
