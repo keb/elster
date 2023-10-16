@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  server:
+    image: docker.io/gitea/gitea:1.20.5
+    container_name: gitea
+    environment:
+      - USER_UID=1001
+      - USER_GID=1001
+    restart: always
+    networks:
+      - gitea
+      - swag-containers
+    volumes:
+      - ./gitea:/data
+      # TODO: figure out ssh
+      # - /home/kevin/.ssh/:/data/git/.ssh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8903:3000"
+      - "2222:22"
+networks:
+  gitea:
+    external: false
+  swag-containers:
+    external: true
+    name: swag-containers
+    driver: bridge
