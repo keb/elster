@@ -24,3 +24,6 @@ docker run -d \
   --volume $CONFIG_DIR:/config \
   --restart unless-stopped \
   lscr.io/linuxserver/swag:latest
+
+# let you actually edit the files and folders created by SWAG
+sudo chown -hR $(id -u):$(id -g) $CONFIG_DIR
