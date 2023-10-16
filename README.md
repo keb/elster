@@ -22,6 +22,7 @@ docker network create --driver=bridge swag-containers
 
 For each new reverse proxy, follow these steps:
 1. Create a new proxy-conf in `swag/config/nginx/proxy-confs`
+    * Do this by copying your confs from `swag/config/nginx/proxy-confs/subdomains` to `swag/config/nginx/proxy-confs`
 2. Update the `SUBDOMAINS` env variable in `swag/run.sh` to include the subdomain of your service
 3. Create a CNAME entry in your domain manager: `CNAME <container name>.<domain>.net <domain>.duckdns.org`
 
